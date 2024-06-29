@@ -1,8 +1,17 @@
 from flask import Flask, request
-import os
 import json
+from matchmaking import matchmaking
+from persistence import persistence
+from persistence import persistence2
+from pvp import pvp
+from seasons import seasons
 
 app = Flask(__name__)
+app.register_blueprint(matchmaking)
+app.register_blueprint(persistence)
+app.register_blueprint(persistence2)
+app.register_blueprint(pvp)
+app.register_blueprint(seasons)
 
 
 @app.route('/l/plantsvszombiesheroes-android-live.json', methods=['GET'])
@@ -344,10 +353,7 @@ def load():
             }
           }
           """
-    print(payload)
-    return json.loads(
-        payload
-    )
+    return json.loads(payload)
 
 
 @app.route('/', methods=['GET'])

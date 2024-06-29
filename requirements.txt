@@ -1,3 +1,4 @@
 Flask
 Gunicorn
 bbpb
+redis[hiredis]
