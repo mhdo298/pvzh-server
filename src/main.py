@@ -65,7 +65,7 @@ def load():
     "MinimumAppVersion": "1.50.2",
     "MinimumAppVersionHeaderTextKey": "AppOutOfDate_ThanksForPlaying_Header",
     "MinimumAppVersionTextKey": "UPDATE_REQUIRED",
-    "MultiplayerBaseUrlProd": \"""" + request.url + \
+    "MultiplayerBaseUrlProd": \"""" + request.url_root[:-1] + \
               """\",
               "OocOfferCount": 2,
               "PersistenceBaseUrlProd": "https://pvz-heroes.awspopcap.com/persistence/",
