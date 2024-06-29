@@ -3,7 +3,7 @@ from flask import Blueprint
 from utils import get_id
 
 persistence = Blueprint('persistence', __name__, url_prefix='/persistence/v1')
-persistence2 = Blueprint('persistence', __name__, url_prefix='/persistence/v2')
+persistence2 = Blueprint('persistence2', __name__, url_prefix='/persistence/v2')
 
 
 @persistence.route('/ping')
