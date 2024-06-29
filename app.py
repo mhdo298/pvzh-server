@@ -228,7 +228,7 @@ def load():
     "MinimumAppVersion": "1.50.2",
     "MinimumAppVersionHeaderTextKey": "AppOutOfDate_ThanksForPlaying_Header",
     "MinimumAppVersionTextKey": "UPDATE_REQUIRED",
-    "MultiplayerBaseUrlProd": "https://pvzheroes-live-server.onrender.com",
+    "MultiplayerBaseUrlProd": """+ os.environ['SERVER_URL']+""",
     "OocOfferCount": 2,
     "PersistenceBaseUrlProd": "https://pvz-heroes.awspopcap.com/persistence/",
     "AccountBaseUrlProd": "https://pvz-heroes.awspopcap.com/accnt/",
