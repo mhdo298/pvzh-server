@@ -15,8 +15,8 @@ def create_challenge():
     challenger = player_data['PlayerId']
     challenged = data['o']
     seed_contribution = getrandbits(60)
-    r.setex(challenger + "-sd", data['sd'], 10)
-    r.setex(challenger + "-seed", seed_contribution, 20)
+    r.setex(challenger + "-sd", 10, data['sd'])
+    r.setex(challenger + "-seed", 10, seed_contribution)
     return {
         "ty": "JoinMatch",
         "eta": 0,
