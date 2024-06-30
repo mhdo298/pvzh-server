@@ -19,7 +19,7 @@ def it_should_be_there_soon(key):
         sd = r.get(key)
         if sd is not None:
             return sd
-        time.sleep(1)
+        time.sleep(0.2)
 
 
 entity_model_typedef = OrderedDict({
