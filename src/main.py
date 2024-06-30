@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, redirect
 import json
 from matchmaking import matchmaking
 from persistence import persistence
@@ -358,7 +358,7 @@ def load():
 
 @app.route('/', methods=['GET'])
 def main():
-    return 'hello world!'
+    return redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
 
 if __name__ == '__main__':
