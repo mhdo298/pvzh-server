@@ -47,10 +47,10 @@ def pvp_poll():
     pid = get_id()
     data = request.get_json()
     l = int(data['l'])
-    update = r.blpop([pid + '-update'], l, 9)[0]
+    update = r.blpop([pid + '-update'], 9)
     if update:
         return {
-            "m": [json.dumps(update[0])],
+            "m": [json.dumps(update[1])],
             "l": l + 1,
             "ty": "PvpMessages"
         }
