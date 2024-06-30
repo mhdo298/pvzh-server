@@ -1,4 +1,4 @@
 Flask
 Gunicorn
-psycopg2
 bbpb
+redis[hiredis]
