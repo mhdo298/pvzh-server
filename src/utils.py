@@ -561,7 +561,7 @@ def make_entity_model(sd1, sd2):
                         "68": {
                             "2": {
                                 "1": {
-                                    "1": 20  # initial health?
+                                    "1": 50  # initial health?
                                 },
                                 "2": 0
                             }
@@ -705,7 +705,7 @@ def make_entity_model(sd1, sd2):
                     "68": {
                         "2": {
                             "1": {
-                                "1": 20
+                                "1": 50
                             },
                             "2": 0
                         }
