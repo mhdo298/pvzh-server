@@ -14,7 +14,7 @@ def create_challenge():
     challenger = player_data['PlayerId']
     challenged = data['o']
     seed_contribution = getrandbits(60)
-    r.setex(challenger + "-sd", 10, json.dumps(data['sd']).encode('utf-8'))
+    r.setex(challenger + "-sd", 10, json.dumps(data['sd']))
     r.setex(challenger + "-seed", 10, seed_contribution)
     return {
         "ty": "JoinMatch",
@@ -29,7 +29,7 @@ def join_match():
     gi = data['gi']
     return {
         "ty": "MatchReady",
-        "sd": it_should_be_there_soon(gi + "-sd"),
+        "sd": it_should_be_there_soon(gi + "-sd").encode('utf-8'),
         "gi": gi,
         "or": 50
     }
