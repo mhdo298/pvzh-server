@@ -29,7 +29,7 @@ def join_match():
     gi = data['gi']
     return {
         "ty": "MatchReady",
-        "sd": it_should_be_there_soon(gi + "-sd").encode('utf-8'),
+        "sd": it_should_be_there_soon(gi + "-sd").decode(),
         "gi": gi,
         "or": 50
     }

@@ -19,7 +19,7 @@ def init_game():
     sd2 = it_should_be_there_soon(gi + '-sd')
 
     return {
-        "entityModel": make_entity_model(sd1, sd2),
+        "entityModel": make_entity_model(json.loads(sd1), json.loads(sd2)),
         "rngSeedData": make_rng(seed),
         "ec": "CgQgACgA",
         "sc": "",
