@@ -36,6 +36,7 @@ def pvp_send_update():
     data = request.get_json()
     gi = data['gi']
     r.rpush(gi + '-update', json.dumps(data))
+    r.expire(gi + '-update', 300)
     return {
         "ty": "PlayResponse",
         "p": "Play"
