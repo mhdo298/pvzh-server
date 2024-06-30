@@ -48,7 +48,7 @@ def pvp_poll():
     pid = get_id()
     data = request.get_json()
     l = int(data['l'])
-    update = r.blpop([pid + '-update'], 9)
+    update = r.blpop([pid + '-update'], 4)
     if update:
         return {
             "m": [update[1].decode()],
