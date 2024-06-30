@@ -35,7 +35,7 @@ def init_game():
 def pvp_send_update():
     data = request.get_json()
     gi = data['gi']
-    r.rpush(gi + '-update', data)
+    r.rpush(gi + '-update', json.dumps(data))
     return {
         "ty": "PlayResponse",
         "p": "Play"
@@ -50,7 +50,7 @@ def pvp_poll():
     update = r.blpop([pid + '-update'], 9)
     if update:
         return {
-            "m": [json.dumps(update[1])],
+            "m": [update[1].decode()],
             "l": l + 1,
             "ty": "PvpMessages"
         }
