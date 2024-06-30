@@ -14,7 +14,7 @@ def init_game():
     gi = data['gi']
     seed1 = it_should_be_there_soon(pid + '-seed')
     seed2 = it_should_be_there_soon(gi + '-seed')
-    seed = seed1 ^ seed2
+    seed = int.from_bytes(seed1) ^ int.from_bytes(seed2)
     sd1 = it_should_be_there_soon(pid + '-sd')
     sd2 = it_should_be_there_soon(gi + '-sd')
 
