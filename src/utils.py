@@ -9,14 +9,15 @@ from redis import Redis
 
 r = Redis.from_url(os.environ['REDIS_URL'])
 
+
 def get_id():
     return request.headers.get("eadp-persona-id")
 
 
 def it_should_be_there_soon(key):
-    for _ in range(10):
+    for _ in range(20):
         sd = r.get(key)
-        if sd:
+        if sd is not None:
             return sd
         time.sleep(0.5)
 
