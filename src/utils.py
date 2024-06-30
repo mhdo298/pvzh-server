@@ -1,4 +1,5 @@
 import base64
+import os
 import time
 from collections import OrderedDict
 
@@ -6,8 +7,7 @@ import blackboxprotobuf
 from flask import request
 from redis import Redis
 
-r = Redis(host='redis-18561.c279.us-central1-1.gce.redns.redis-cloud.com', port=18561, decode_responses=True)
-
+r = Redis.from_url(os.environ['REDIS_URL'])
 
 def get_id():
     request.headers.get("eadp-persona-id")
