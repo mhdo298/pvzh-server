@@ -10,7 +10,7 @@ from redis import Redis
 r = Redis.from_url(os.environ['REDIS_URL'])
 
 def get_id():
-    request.headers.get("eadp-persona-id")
+    return request.headers.get("eadp-persona-id")
 
 
 def it_should_be_there_soon(key):
