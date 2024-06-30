@@ -15,11 +15,11 @@ def get_id():
 
 
 def it_should_be_there_soon(key):
-    for _ in range(20):
+    for _ in range(10):
         sd = r.get(key)
         if sd is not None:
             return sd
-        time.sleep(0.5)
+        time.sleep(1)
 
 
 entity_model_typedef = OrderedDict({
