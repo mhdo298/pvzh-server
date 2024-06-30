@@ -16,7 +16,7 @@ def get_id():
 def it_should_be_there_soon(key):
     for _ in range(10):
         sd = r.get(key)
-        if sd is not None:
+        if sd:
             return sd
         time.sleep(0.5)
 

@@ -8,7 +8,7 @@ from random import getrandbits
 matchmaking = Blueprint('matchmaking', __name__, url_prefix='/matchmaking/v1')
 
 
-@matchmaking.route('/createChallenge')
+@matchmaking.route('/createChallenge', methods=['POST'])
 def create_challenge():
     data = request.get_json()
     player_data = json.loads(data['sd'])
@@ -24,7 +24,7 @@ def create_challenge():
     }
 
 
-@matchmaking.route('/joinMatch')
+@matchmaking.route('/joinMatch', methods=['POST'])
 def join_match():
     data = request.get_json()
     gi = data['gi']

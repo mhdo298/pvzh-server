@@ -1,11 +1,13 @@
+import json
+
 from flask import Blueprint, request
 
-from utils import get_id, it_should_be_there_soon, make_entity_model, make_rng
+from utils import get_id, it_should_be_there_soon, make_entity_model, make_rng, r
 
 pvp = Blueprint('pvp', __name__, url_prefix='/pvp/v1')
 
 
-@pvp.route('/initGame')
+@pvp.route('/initGame', methods=['POST'])
 def init_game():
     pid = get_id()
     data = request.get_json()
@@ -29,14 +31,35 @@ def init_game():
     }
 
 
-@pvp.route('/pvpSendUpdate')
+@pvp.route('/pvpSendUpdate', methods=['POST'])
 def pvp_send_update():
-    return {}
+    data = request.get_json()
+    gi = data['gi']
+    r.rpush(gi + '-update', data)
+    return {
+        "ty": "PlayResponse",
+        "p": "Play"
+    }
 
 
-@pvp.route('/pvpPoll')
+@pvp.route('/pvpPoll', methods=['POST'])
 def pvp_poll():
-    pass
+    pid = get_id()
+    data = request.get_json()
+    l = int(data['l'])
+    update = r.blpop(pid + '-update', l, 9)
+    if update:
+        return {
+            "m": [json.dumps(update[0])],
+            "l": l + 1,
+            "ty": "PvpMessages"
+        }
+    else:
+        return {
+            "m": [],
+            "l": 0,
+            "ty": "PvpMessages"
+        }
 
 
 @pvp.route('/history')
