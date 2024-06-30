@@ -665,7 +665,7 @@ def make_entity_model(sd1, sd2):
             }, {
                 "1": [{
                     "20": {
-                        "1": 10  # max hand size?
+                        "1": 15  # max hand size?
                     }
                 }, {
                     "37": {
@@ -810,7 +810,7 @@ def make_entity_model(sd1, sd2):
             {
                 "1": [{
                     "20": {
-                        "1": 10
+                        "1": 15
                     }
                 }, {
                     "37": {
