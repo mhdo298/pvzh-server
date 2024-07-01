@@ -95,14 +95,14 @@ def inventory():
     return {
         "lastUpdated": 0,
         "version": 1,
-        "totalGemBalance": 0,
+        "totalGemBalance": 100000,
         "totalNumCards": 0,
         "Id": get_id(),
         "GemsEarned": 0,
         "GemsPurchased": 0,
         "SilverAcquired": 0,
         "SilverSpent": 0,
-        "Sparks": 10000,
+        "Sparks": 100000,
         "AwardedQuests": None,
         "Currencies": {},
         "Heroes": {
@@ -633,6 +633,13 @@ def inventory():
             "687": 4,
             "688": 4,
             "691": 4
+        },
+        "Events": {
+            "359": {
+                "Points": 0,
+                "Started": 1,
+                "Ended": 0
+            }
         },
         "UnopenedBoosterPacks": [],
         "UnredeemedAdRewardCredit": 3,
