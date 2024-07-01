@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, url_for
 import json
 from matchmaking import matchmaking
 from persistence import persistence
@@ -77,7 +77,7 @@ def load():
     "MultiplayerBaseUrlProd": \"""" + request.url_root[:-1] + \
               """\",
               "OocOfferCount": 2,
-              "PersistenceBaseUrlProd": "https://pvz-heroes.awspopcap.com/persistence/",
+              "PersistenceBaseUrlProd": \"""" + url_for('persistence') + """\",
               "AccountBaseUrlProd": "https://pvz-heroes.awspopcap.com/accnt/",
               "PvEProvisionPeriodLength": 14,
               "PvPGamesAtInitialK": 10,
