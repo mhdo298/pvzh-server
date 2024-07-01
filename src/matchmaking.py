@@ -71,15 +71,15 @@ def match_poll():
     queue_type = data['q']
     player_data = json.loads(data['sd'])
     challenger = player_data['PlayerId']
-    challenged = r.blpop(queue_type + challenger + faction, 4)
-    if challenged:
+    challenged = r.blpop([queue_type + challenger + faction], 4)
+    if challenged is not None:
         seed_contribution = getrandbits(60)
         r.setex(challenger + "-sd", 20, data['sd'])
         r.setex(challenger + "-seed", 20, seed_contribution)
         return {
             "ty": "JoinMatch",
             "eta": 0,
-            "gi": challenged.decode()
+            "gi": challenged[1].decode()
         }
     else:
         return {
