@@ -1,7 +1,7 @@
 import json
 
 from flask import Blueprint, request
-from utils import r, it_should_be_there_soon
+from utils import r, it_should_be_there_soon, get_id
 from random import getrandbits
 
 matchmaking = Blueprint('matchmaking', __name__, url_prefix='/matchmaking/v1')
@@ -37,6 +37,18 @@ def join_match():
 
 @matchmaking.route('/makeMatch')
 def make_match():
+    data = request.get_json()
+    faction = data['f']
+    queue_type = data['q']
+    player_data = json.loads(data['sd'])
+    challenger = player_data['PlayerId']
+    opposite = 'P' if faction == 'Z' else 'Z'
+    challenged = r.lpop(queue_type + opposite)
+    if challenged:
+        r.rpush(queue_type + challenger + faction, challenged)
+        r.rpush(queue_type + challenged + opposite, challenger)
+    else:
+        r.rpush(queue_type + faction, challenger)
     return {
         "ty": "WaitingForMatch",
         "eta": 30,
@@ -46,4 +58,36 @@ def make_match():
 
 @matchmaking.route('/matchPoll')
 def match_poll():
-    return {}
+    data = request.get_json()
+    faction = data['f']
+    queue_type = data['q']
+    player_data = json.loads(data['sd'])
+    challenger = player_data['PlayerId']
+    challenged = r.blpop(queue_type + challenger + faction, 4)
+    if challenged:
+        seed_contribution = getrandbits(60)
+        r.setex(challenger + "-sd", 20, data['sd'])
+        r.setex(challenger + "-seed", 20, seed_contribution)
+        return {
+            "ty": "JoinMatch",
+            "eta": 0,
+            "gi": challenged.decode()
+        }
+    else:
+        return {
+            "ty": "RepollForMatch",
+            "eta": 0,
+            "gi": None
+        }
+
+
+@matchmaking.route('/cancelMatch', methods=['POST'])
+def cancel_match():
+    gid = get_id()
+    r.lrem('casualZ', gid)
+    r.lrem('casualP', gid)
+    r.lrem('rankedZ', gid)
+    r.lrem('rankedZ', gid)
+    return {
+        "ty": "MatchCancelled"
+    }
