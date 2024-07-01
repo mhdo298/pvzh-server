@@ -6,12 +6,12 @@ persistence = Blueprint('persistence', __name__, url_prefix='/persistence/v1')
 persistence2 = Blueprint('persistence2', __name__, url_prefix='/persistence/v2')
 
 
-@persistence.route('/ping')
+@persistence.route('/ping', methods=['GET'])
 def ping():
     return 'ping'
 
 
-@persistence.route('/decks/sync')
+@persistence.route('/decks/sync', methods=['POST'])
 def decks():
     return {
         "version": 1,
@@ -20,7 +20,7 @@ def decks():
     }
 
 
-@persistence.route('/user/sync')
+@persistence.route('/user/sync', methods=['POST'])
 def user():
     return {
         "TagCounters": {
@@ -80,7 +80,7 @@ def user():
     }
 
 
-@persistence.route('/inventory/sync')
+@persistence.route('/inventory/sync', methods=['POST'])
 def inventory():
     return {
         "lastUpdated": 0,
@@ -630,7 +630,7 @@ def inventory():
     }
 
 
-@persistence2.route('/playerInfo')
+@persistence2.route('/playerInfo', methods=['GET'])
 def player_info():
     return {
         "Id": get_id(),
