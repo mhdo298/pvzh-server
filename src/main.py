@@ -365,7 +365,7 @@ def other_load():
         "DMGId": 0,
         "appUpgrade": 0,
         "clientId": "pvzheroes-2015-google-client",
-        "clientSecret": "",
+        "clientSecret": "SCi5wjehz7Ia2Lx0C8RGcXvEHGk5YKKCKEPxhTJdsXECZCvL6h4xJGL22AhXfrcZxIQBGZ3lvyfNxmQS",
         "disabledFeatures": [],
         "facebookAPIKey": "",
         "facebookAppId": "",
