@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from utils import get_id
+from utils import get_id, now
 
 persistence = Blueprint('persistence', __name__, url_prefix='/persistence/v1')
 persistence2 = Blueprint('persistence2', __name__, url_prefix='/persistence/v2')
@@ -93,12 +93,12 @@ def user():
 @persistence.route('/inventory/sync', methods=['POST'])
 def inventory():
     return {
-        "lastUpdated": 0,
+        "lastUpdated": now(),
         "version": 1,
         "totalGemBalance": 100000,
         "totalNumCards": 0,
         "Id": get_id(),
-        "GemsEarned": 0,
+        "GemsEarned": 100000,
         "GemsPurchased": 0,
         "SilverAcquired": 0,
         "SilverSpent": 0,
@@ -643,7 +643,7 @@ def inventory():
         },
         "UnopenedBoosterPacks": [],
         "UnredeemedAdRewardCredit": 3,
-        "InstallDate": 1719691398
+        "InstallDate": now()
     }
 
 
@@ -651,7 +651,7 @@ def inventory():
 def player_info():
     return {
         "Id": get_id(),
-        "InstallDate": 1719691398,
+        "InstallDate": now(),
         "PurchaseHistorySummary": {
             "LifetimeCashSpend": 0,
             "LastCashPurchase": 0,

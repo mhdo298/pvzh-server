@@ -10,6 +10,10 @@ from redis import Redis
 r = Redis.from_url(os.environ['REDIS_URL'])
 
 
+def now():
+    return int(time.time())
+
+
 def get_id():
     return request.headers.get("eadp-persona-id")
 
