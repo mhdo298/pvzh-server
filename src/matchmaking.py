@@ -51,7 +51,7 @@ def make_match():
     player_data = json.loads(data['sd'])
     challenger = player_data['PlayerId']
     opposite = 'P' if faction == 'Z' else 'Z'
-    challenged = r.lpop(queue_type + opposite)
+    challenged = r.lpop(queue_type + opposite).decode()
     print(challenged)
     if challenged is not None:
         r.rpush(queue_type + challenger + faction, challenged)
