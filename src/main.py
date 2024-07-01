@@ -5,6 +5,7 @@ from persistence import persistence
 from persistence import persistence2
 from pvp import pvp
 from seasons import seasons
+from crafting import crafting
 
 app = Flask(__name__)
 app.register_blueprint(matchmaking)
@@ -12,6 +13,7 @@ app.register_blueprint(persistence)
 app.register_blueprint(persistence2)
 app.register_blueprint(pvp)
 app.register_blueprint(seasons)
+app.register_blueprint(crafting)
 
 
 @app.route('/l/plantsvszombiesheroes-android-live.json', methods=['GET'])
