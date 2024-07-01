@@ -7,6 +7,14 @@ from random import getrandbits
 matchmaking = Blueprint('matchmaking', __name__, url_prefix='/matchmaking/v1')
 
 
+@matchmaking.route('/queryStats', methods=['GET'])
+def query_stats():
+    return {
+        "fastestRankedMatch": "None",
+        "fastestCasualMatch": "None"
+    }
+
+
 @matchmaking.route('/createChallenge', methods=['POST'])
 def create_challenge():
     data = request.get_json()
@@ -35,7 +43,7 @@ def join_match():
     }
 
 
-@matchmaking.route('/makeMatch')
+@matchmaking.route('/makeMatch', methods=['POST'])
 def make_match():
     data = request.get_json()
     faction = data['f']
@@ -56,7 +64,7 @@ def make_match():
     }
 
 
-@matchmaking.route('/matchPoll')
+@matchmaking.route('/matchPoll', methods=['POST'])
 def match_poll():
     data = request.get_json()
     faction = data['f']
