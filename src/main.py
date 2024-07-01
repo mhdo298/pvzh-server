@@ -357,6 +357,172 @@ def load():
     return json.loads(payload)
 
 
+@app.route('/director/api/android/getDirectionByPackage', methods=['GET'])
+def other_load():
+    return {
+        "resultCode": 0,
+        "serverApiVersion": "1.0.0",
+        "DMGId": 0,
+        "appUpgrade": 0,
+        "clientId": "pvzheroes-2015-google-client",
+        "clientSecret": "",
+        "disabledFeatures": [],
+        "facebookAPIKey": "",
+        "facebookAppId": "",
+        "hwId": 2363,
+        "mayhemGameCode": "",
+        "mdmAppKey": "pvzheroes-2016-android",
+        "packageId": "com.ea.gp.pvzheroes",
+        "pollIntervals": [
+            {
+                "key": "badgePollInterval",
+                "value": "300"
+            }
+        ],
+        "productId": 56371,
+        "sellId": 870278,
+        "serverData": [
+            {
+                "key": "nexus.portal",
+                "value": "https://signin.ea.com/"
+            },
+            {
+                "key": "antelope.groups.url",
+                "value": "https://groups.gameservices.ea.com"
+            },
+            {
+                "key": "service.discovery.url",
+                "value": "https://service-discovery.tnt-ea.com"
+            },
+            {
+                "key": "synergy.tracking",
+                "value": "https://river-mobile.data.ea.com"
+            },
+            {
+                "key": "antelope.rtm.host",
+                "value": "rtm.tnt-ea.com:9000"
+            },
+            {
+                "key": "antelope.friends.url",
+                "value": "https://friends.gs.ea.com:443"
+            },
+            {
+                "key": "dmg.url",
+                "value": "http://gamecloud.j2play.net"
+            },
+            {
+                "key": "avatars.url",
+                "value": "https://m.avatar.dm.origin.com"
+            },
+            {
+                "key": "synergy.m2u",
+                "value": "https://m2u.sn.eamobile.com"
+            },
+            {
+                "key": "akamai.url",
+                "value": "http://cdn.skum.eamobile.com/skumasset/gameasset/"
+            },
+            {
+                "key": "synergy.pns",
+                "value": "https://m2upns-game.sn.eamobile.com"
+            },
+            {
+                "key": "mayhem.url",
+                "value": "https://ipsp.sn.eamobile.com"
+            },
+            {
+                "key": "group.recommendations.url",
+                "value": "https://recommendations.tnt-ea.com"
+            },
+            {
+                "key": "synergy.s2s",
+                "value": "https://mars.tnt-ea.com"
+            },
+            {
+                "key": "friend.recommendations.url",
+                "value": "https://recommendations.tnt-ea.com"
+            },
+            {
+                "key": "geoip.url",
+                "value": "https://geoip.tnt-ea.com"
+            },
+            {
+                "key": "river.pin",
+                "value": "https://pin-river.data.ea.com"
+            },
+            {
+                "key": "origincasualserver.url",
+                "value": "https://oms.origin.com/api/"
+            },
+            {
+                "key": "ens.url",
+                "value": "https://pn.tnt-ea.com/rest/v1"
+            },
+            {
+                "key": "eadp.friends.host",
+                "value": "https://friends.gs.ea.com"
+            },
+            {
+                "key": "synergy.product",
+                "value": "https://product.sn.eamobile.com"
+            },
+            {
+                "key": "synergy.drm",
+                "value": "https://drm.sn.eamobile.com"
+            },
+            {
+                "key": "synergy.user",
+                "value": "https://user.sn.eamobile.com"
+            },
+            {
+                "key": "antelope.inbox.url",
+                "value": "https://inbox.tnt-ea.com"
+            },
+            {
+                "key": "antelope.rtm.url",
+                "value": "https://rtm.tnt-ea.com"
+            },
+            {
+                "key": "applecert.url",
+                "value": "https://www.apple.com/appleca/AppleIncRootCertificate.cer"
+            },
+            {
+                "key": "friends.url",
+                "value": "https://m.friends.dm.origin.com"
+            },
+            {
+                "key": "aruba.url",
+                "value": "https://emapi.prm.data.ea.com"
+            },
+            {
+                "key": "synergy.cipgl",
+                "value": "https://geoip.tnt-ea.com"
+            },
+            {
+                "key": "nexus.connect",
+                "value": "https://accounts.ea.com/"
+            },
+            {
+                "key": "synergy.director",
+                "value": "https://director.sn.eamobile.com"
+            },
+            {
+                "key": "pin.aruba.url",
+                "value": "https://pin-em.data.ea.com"
+            },
+            {
+                "key": "nexus.proxy",
+                "value": "https://gateway.ea.com/"
+            },
+            {
+                "key": "origincasualapp.url",
+                "value": "https://oms.origin.com/loader/mobile/android/"
+            }
+        ],
+        "telemetryFreq": 300
+    }
+
+
 @app.route('/', methods=['GET'])
 def main():
     return redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
