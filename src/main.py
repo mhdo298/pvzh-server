@@ -77,7 +77,7 @@ def load():
     "MultiplayerBaseUrlProd": \"""" + request.url_root[:-1] + \
               """\",
               "OocOfferCount": 2,
-              "PersistenceBaseUrlProd": \"""" + url_for('persistence') + """\",
+              "PersistenceBaseUrlProd": \"""" + request.url_root[:-1] + """/persistence/\",
               "AccountBaseUrlProd": "https://pvz-heroes.awspopcap.com/accnt/",
               "PvEProvisionPeriodLength": 14,
               "PvPGamesAtInitialK": 10,
