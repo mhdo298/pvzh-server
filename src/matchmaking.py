@@ -93,10 +93,10 @@ def match_poll():
 @matchmaking.route('/cancelMatch', methods=['POST'])
 def cancel_match():
     gid = get_id()
-    r.lrem('casualZ', gid)
-    r.lrem('casualP', gid)
-    r.lrem('rankedZ', gid)
-    r.lrem('rankedZ', gid)
+    r.lrem('casualZ', 0, gid)
+    r.lrem('casualP', 0, gid)
+    r.lrem('rankedZ', 0, gid)
+    r.lrem('rankedZ', 0, gid)
     return {
         "ty": "MatchCancelled"
     }
