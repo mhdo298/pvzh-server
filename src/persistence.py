@@ -24,6 +24,9 @@ def decks():
 def user():
     return {
         "TagCounters": {
+            "PW-0-0": 1,
+            "PW-0-1": 1,
+            "PW-0-2": 1,
             "FQC-F_UnlockMulligan": 1,
             "FQC-F_UnlockPlantHero2": 1,
             "FQC-F_UnlockPlantHero3": 1,
