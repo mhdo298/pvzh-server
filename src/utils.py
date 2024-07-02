@@ -8,8 +8,10 @@ from flask import url_for, request
 from redis import Redis
 
 r = Redis.from_url(os.environ['REDIS_URL'])
+
+
 def root():
-    return url_for('main')
+    return request.root_url[:-1].replace('http:', 'https:')
 
 
 def now():
