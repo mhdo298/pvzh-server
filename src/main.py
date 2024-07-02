@@ -525,7 +525,9 @@ def other_load():
         "telemetryFreq": 300
     }
 
-
+@app.errorhandler(302)
+def minimal_redirect():
+    return u"", 302
 @app.route('/', methods=['GET'])
 def main():
     return redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
