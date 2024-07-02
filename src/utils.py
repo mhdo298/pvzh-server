@@ -9,7 +9,7 @@ from redis import Redis
 
 r = Redis.from_url(os.environ['REDIS_URL'])
 def root():
-    return url_for('/')
+    return url_for('main')
 
 
 def now():

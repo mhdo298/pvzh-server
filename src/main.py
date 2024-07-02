@@ -29,7 +29,7 @@ def load():
     "AllowCheatsProd": true,
     "AllowCheatsStage": true,
     "AntelopeSocialActive": true,
-    "AssetBundlesEndpointProd": "https://pvzheroes-live.ecs.popcap.com/assetbundles",
+    "AssetBundlesEndpointProd": \"""" + root().replace('https:', 'http:') + """/assetbundles",
     "CertainEloKValue": 60,
     "CertainEloKValue_Hi": 70,
     "CertainEloKValue_Lo": 50,
