@@ -387,19 +387,19 @@ def other_load():
         "serverData": [
             {
                 "key": "nexus.portal",
-                "value": "http://signin.ea.com/"
+                "value": "https://signin.ea.com/"
             },
             {
                 "key": "antelope.groups.url",
-                "value": "http://groups.gameservices.ea.com"
+                "value": "https://groups.gameservices.ea.com"
             },
             {
                 "key": "service.discovery.url",
-                "value": "http://service-discovery.tnt-ea.com"
+                "value": "https://service-discovery.tnt-ea.com"
             },
             {
                 "key": "synergy.tracking",
-                "value": "http://river-mobile.data.ea.com"
+                "value": "https://river-mobile.data.ea.com"
             },
             {
                 "key": "antelope.rtm.host",
@@ -407,95 +407,95 @@ def other_load():
             },
             {
                 "key": "antelope.friends.url",
-                "value": "http://friends.gs.ea.com:443"
+                "value": "https://friends.gs.ea.com:443"
             },
             {
                 "key": "dmg.url",
-                "value": "http://gamecloud.j2play.net"
+                "value": "https://gamecloud.j2play.net"
             },
             {
                 "key": "avatars.url",
-                "value": "http://m.avatar.dm.origin.com"
+                "value": "https://m.avatar.dm.origin.com"
             },
             {
                 "key": "synergy.m2u",
-                "value": "http://m2u.sn.eamobile.com"
+                "value": "https://m2u.sn.eamobile.com"
             },
             {
                 "key": "akamai.url",
-                "value": "http://cdn.skum.eamobile.com/skumasset/gameasset/"
+                "value": "https://cdn.skum.eamobile.com/skumasset/gameasset/"
             },
             {
                 "key": "synergy.pns",
-                "value": "http://m2upns-game.sn.eamobile.com"
+                "value": "https://m2upns-game.sn.eamobile.com"
             },
             {
                 "key": "mayhem.url",
-                "value": "http://ipsp.sn.eamobile.com"
+                "value": "https://ipsp.sn.eamobile.com"
             },
             {
                 "key": "group.recommendations.url",
-                "value": "http://recommendations.tnt-ea.com"
+                "value": "https://recommendations.tnt-ea.com"
             },
             {
                 "key": "synergy.s2s",
-                "value": "http://mars.tnt-ea.com"
+                "value": "https://mars.tnt-ea.com"
             },
             {
                 "key": "friend.recommendations.url",
-                "value": "http://recommendations.tnt-ea.com"
+                "value": "https://recommendations.tnt-ea.com"
             },
             {
                 "key": "geoip.url",
-                "value": "http://geoip.tnt-ea.com"
+                "value": "https://geoip.tnt-ea.com"
             },
             {
                 "key": "river.pin",
-                "value": "http://pin-river.data.ea.com"
+                "value": "https://pin-river.data.ea.com"
             },
             {
                 "key": "origincasualserver.url",
-                "value": "http://oms.origin.com/api/"
+                "value": "https://oms.origin.com/api/"
             },
             {
                 "key": "ens.url",
-                "value": "http://pn.tnt-ea.com/rest/v1"
+                "value": "https://pn.tnt-ea.com/rest/v1"
             },
             {
                 "key": "eadp.friends.host",
-                "value": "http://friends.gs.ea.com"
+                "value": "https://friends.gs.ea.com"
             },
             {
                 "key": "synergy.product",
-                "value": "http://product.sn.eamobile.com"
+                "value": "https://product.sn.eamobile.com"
             },
             {
                 "key": "synergy.drm",
-                "value": "http://drm.sn.eamobile.com"
+                "value": "https://drm.sn.eamobile.com"
             },
             {
                 "key": "synergy.user",
-                "value": "http://user.sn.eamobile.com"
+                "value": "https://user.sn.eamobile.com"
             },
             {
                 "key": "antelope.inbox.url",
-                "value": "http://inbox.tnt-ea.com"
+                "value": "https://inbox.tnt-ea.com"
             },
             {
                 "key": "antelope.rtm.url",
-                "value": "http://rtm.tnt-ea.com"
+                "value": "https://rtm.tnt-ea.com"
             },
             {
                 "key": "applecert.url",
-                "value": "http://www.apple.com/appleca/AppleIncRootCertificate.cer"
+                "value": "https://www.apple.com/appleca/AppleIncRootCertificate.cer"
             },
             {
                 "key": "friends.url",
-                "value": "http://m.friends.dm.origin.com"
+                "value": "https://m.friends.dm.origin.com"
             },
             {
                 "key": "aruba.url",
-                "value": "http://emapi.prm.data.ea.com"
+                "value": "https://emapi.prm.data.ea.com"
             },
             {
                 "key": "synergy.cipgl",
@@ -503,23 +503,23 @@ def other_load():
             },
             {
                 "key": "nexus.connect",
-                "value": "http://accounts.ea.com/"
+                "value": "https://accounts.ea.com/"
             },
             {
                 "key": "synergy.director",
-                "value": "http://director.sn.eamobile.com"
+                "value": "https://director.sn.eamobile.com"
             },
             {
                 "key": "pin.aruba.url",
-                "value": "http://pin-em.data.ea.com"
+                "value": "https://pin-em.data.ea.com"
             },
             {
                 "key": "nexus.proxy",
-                "value": "http://gateway.ea.com/"
+                "value": "https://gateway.ea.com/"
             },
             {
                 "key": "origincasualapp.url",
-                "value": "http://oms.origin.com/loader/mobile/android/"
+                "value": "https://oms.origin.com/loader/mobile/android/"
             }
         ],
         "telemetryFreq": 300
