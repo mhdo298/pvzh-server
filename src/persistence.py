@@ -659,3 +659,17 @@ def player_info():
         },
         "version": 1
     }
+
+
+# TODO: hook this up with inventory sync so that the player gets the cards
+@persistence2.route('/commitSoftPurchase', methods=['POST'])
+def commit_soft_purchase():
+    return {
+        "SuccessCode": "Success",
+        "PurchaseHistorySummary": {
+            "LifetimeCashSpend": 0,
+            "LastCashPurchase": 0,
+            "Products": {
+            }
+        }
+    }

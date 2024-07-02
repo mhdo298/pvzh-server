@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for
+from flask import Flask, redirect
 import json
 from matchmaking import matchmaking
 from persistence import persistence
@@ -7,6 +7,7 @@ from pvp import pvp
 from seasons import seasons
 from crafting import crafting
 from assetbundles import assetbundles
+from src.utils import root
 
 app = Flask(__name__)
 app.register_blueprint(matchmaking)
@@ -16,6 +17,7 @@ app.register_blueprint(pvp)
 app.register_blueprint(seasons)
 app.register_blueprint(crafting)
 app.register_blueprint(assetbundles)
+
 
 @app.route('/l/plantsvszombiesheroes-android-live.json', methods=['GET'])
 def load():
@@ -35,7 +37,7 @@ def load():
     "CertainPvPEloKValue_Hi": 70,
     "CertainPvPEloKValue_Lo": 50,
     "CopernicusUrlProd": "https://stats.popcap.com",
-    "CraftingBaseUrlProd": \"""" + request.url_root[:-1] + """/crafting/",
+    "CraftingBaseUrlProd": \"""" + root + """/crafting/",
     "DraperCheat_AgeVerified": "",
     "DraperCheat_ClientTest": "",
     "DraperCheat_ClientVersion": "",
@@ -77,9 +79,9 @@ def load():
     "MinimumAppVersion": "1.50.2",
     "MinimumAppVersionHeaderTextKey": "AppOutOfDate_ThanksForPlaying_Header",
     "MinimumAppVersionTextKey": "UPDATE_REQUIRED",
-    "MultiplayerBaseUrlProd": \"""" + request.url_root[:-1] + """\",
+    "MultiplayerBaseUrlProd": \"""" + root + """\",
       "OocOfferCount": 2,
-      "PersistenceBaseUrlProd": \"""" + request.url_root[:-1] + """/persistence/",
+      "PersistenceBaseUrlProd": \"""" + root + """/persistence/",
       "AccountBaseUrlProd": "https://pvz-heroes.awspopcap.com/accnt/",
       "PvEProvisionPeriodLength": 14,
       "PvPGamesAtInitialK": 10,

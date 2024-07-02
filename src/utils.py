@@ -4,10 +4,11 @@ import time
 from collections import OrderedDict
 
 import blackboxprotobuf
-from flask import request
+from flask import url_for, request
 from redis import Redis
 
 r = Redis.from_url(os.environ['REDIS_URL'])
+root = url_for('/')
 
 
 def now():

@@ -7,7 +7,7 @@ from random import getrandbits
 matchmaking = Blueprint('matchmaking', __name__, url_prefix='/matchmaking/v1')
 
 
-@matchmaking.route('/queryStats', methods=['GET'])
+@matchmaking.route('/queryStats', methods=['POST'])
 def query_stats():
     return {
         "fastestRankedMatch": "None",
