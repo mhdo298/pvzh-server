@@ -387,19 +387,19 @@ def other_load():
         "serverData": [
             {
                 "key": "nexus.portal",
-                "value": "https://signin.ea.com/"
+                "value": "http://signin.ea.com/"
             },
             {
                 "key": "antelope.groups.url",
-                "value": "https://groups.gameservices.ea.com"
+                "value": "http://groups.gameservices.ea.com"
             },
             {
                 "key": "service.discovery.url",
-                "value": "https://service-discovery.tnt-ea.com"
+                "value": "http://service-discovery.tnt-ea.com"
             },
             {
                 "key": "synergy.tracking",
-                "value": "https://river-mobile.data.ea.com"
+                "value": "http://river-mobile.data.ea.com"
             },
             {
                 "key": "antelope.rtm.host",
@@ -407,7 +407,7 @@ def other_load():
             },
             {
                 "key": "antelope.friends.url",
-                "value": "https://friends.gs.ea.com:443"
+                "value": "http://friends.gs.ea.com:443"
             },
             {
                 "key": "dmg.url",
@@ -415,11 +415,11 @@ def other_load():
             },
             {
                 "key": "avatars.url",
-                "value": "https://m.avatar.dm.origin.com"
+                "value": "http://m.avatar.dm.origin.com"
             },
             {
                 "key": "synergy.m2u",
-                "value": "https://m2u.sn.eamobile.com"
+                "value": "http://m2u.sn.eamobile.com"
             },
             {
                 "key": "akamai.url",
@@ -427,107 +427,104 @@ def other_load():
             },
             {
                 "key": "synergy.pns",
-                "value": "https://m2upns-game.sn.eamobile.com"
+                "value": "http://m2upns-game.sn.eamobile.com"
             },
             {
                 "key": "mayhem.url",
-                "value": "https://ipsp.sn.eamobile.com"
+                "value": "http://ipsp.sn.eamobile.com"
             },
             {
                 "key": "group.recommendations.url",
-                "value": "https://recommendations.tnt-ea.com"
+                "value": "http://recommendations.tnt-ea.com"
             },
             {
                 "key": "synergy.s2s",
-                "value": "https://mars.tnt-ea.com"
+                "value": "http://mars.tnt-ea.com"
             },
             {
                 "key": "friend.recommendations.url",
-                "value": "https://recommendations.tnt-ea.com"
+                "value": "http://recommendations.tnt-ea.com"
             },
             {
                 "key": "geoip.url",
-                "value": "https://geoip.tnt-ea.com"
+                "value": "http://geoip.tnt-ea.com"
             },
             {
                 "key": "river.pin",
-                "value": "https://pin-river.data.ea.com"
+                "value": "http://pin-river.data.ea.com"
             },
             {
                 "key": "origincasualserver.url",
-                "value": "https://oms.origin.com/api/"
+                "value": "http://oms.origin.com/api/"
             },
             {
                 "key": "ens.url",
-                "value": "https://pn.tnt-ea.com/rest/v1"
+                "value": "http://pn.tnt-ea.com/rest/v1"
             },
             {
                 "key": "eadp.friends.host",
-                "value": "https://friends.gs.ea.com"
+                "value": "http://friends.gs.ea.com"
             },
             {
                 "key": "synergy.product",
-                "value": "https://product.sn.eamobile.com"
+                "value": "http://product.sn.eamobile.com"
             },
             {
                 "key": "synergy.drm",
-                "value": "https://drm.sn.eamobile.com"
+                "value": "http://drm.sn.eamobile.com"
             },
             {
                 "key": "synergy.user",
-                "value": "https://user.sn.eamobile.com"
+                "value": "http://user.sn.eamobile.com"
             },
             {
                 "key": "antelope.inbox.url",
-                "value": "https://inbox.tnt-ea.com"
+                "value": "http://inbox.tnt-ea.com"
             },
             {
                 "key": "antelope.rtm.url",
-                "value": "https://rtm.tnt-ea.com"
+                "value": "http://rtm.tnt-ea.com"
             },
             {
                 "key": "applecert.url",
-                "value": "https://www.apple.com/appleca/AppleIncRootCertificate.cer"
+                "value": "http://www.apple.com/appleca/AppleIncRootCertificate.cer"
             },
             {
                 "key": "friends.url",
-                "value": "https://m.friends.dm.origin.com"
+                "value": "http://m.friends.dm.origin.com"
             },
             {
                 "key": "aruba.url",
-                "value": "https://emapi.prm.data.ea.com"
+                "value": "http://emapi.prm.data.ea.com"
             },
             {
                 "key": "synergy.cipgl",
-                "value": "https://geoip.tnt-ea.com"
+                "value": "http://geoip.tnt-ea.com"
             },
             {
                 "key": "nexus.connect",
-                "value": "https://accounts.ea.com/"
+                "value": "http://accounts.ea.com/"
             },
             {
                 "key": "synergy.director",
-                "value": "https://director.sn.eamobile.com"
+                "value": "http://director.sn.eamobile.com"
             },
             {
                 "key": "pin.aruba.url",
-                "value": "https://pin-em.data.ea.com"
+                "value": "http://pin-em.data.ea.com"
             },
             {
                 "key": "nexus.proxy",
-                "value": "https://gateway.ea.com/"
+                "value": "http://gateway.ea.com/"
             },
             {
                 "key": "origincasualapp.url",
-                "value": "https://oms.origin.com/loader/mobile/android/"
+                "value": "http://oms.origin.com/loader/mobile/android/"
             }
         ],
         "telemetryFreq": 300
     }
 
-@app.errorhandler(302)
-def minimal_redirect():
-    return u"", 302
 @app.route('/', methods=['GET'])
 def main():
     return redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
