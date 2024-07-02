@@ -87,7 +87,7 @@ def load():
       "PvPGamesAtInitialK": 10,
       "PvPGamesAtInitialK_Hi": 10,
       "PvPGamesAtInitialK_Lo": 10,
-      "QuestsBaseUrlProd": "//localhost:5000",
+      "QuestsBaseUrlProd": "https://pvz-heroes.awspopcap.com/quests/",
       "QuestsGamesAwayThreshold": 2,
       "QuestsWithNotes": "F_UnlockZombieHQ;F_UnlockPlantHero3;F_UnlockZombieHero2",
       "RefreshTimeLimit": 5,
