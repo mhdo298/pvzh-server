@@ -7,7 +7,7 @@ from pvp import pvp
 from seasons import seasons
 from crafting import crafting
 from assetbundles import assetbundles
-from src.utils import root
+from utils import root
 
 app = Flask(__name__)
 app.register_blueprint(matchmaking)
