@@ -1,6 +1,6 @@
-from flask import Blueprint
+from flask import Blueprint, request
 
-from utils import get_id, now
+from utils import get_id, now, r
 
 persistence = Blueprint('persistence', __name__, url_prefix='/persistence/v1')
 persistence2 = Blueprint('persistence2', __name__, url_prefix='/persistence/v2')
@@ -92,6 +92,12 @@ def user():
 
 @persistence.route('/inventory/sync', methods=['POST'])
 def inventory():
+    events = request.get_json()
+    if 'Events' in events:
+        events = events['Events']
+        r.set('Event', events)
+    else:
+        events = r.get('Event')
     return {
         "lastUpdated": now(),
         "version": 1,
@@ -634,13 +640,7 @@ def inventory():
             "688": 4,
             "691": 4
         },
-        "Events": {
-            "360": {
-                "Points": 0,
-                "Started": 1,
-                "Ended": 0
-            }
-        },
+        "Events": events,
         "UnopenedBoosterPacks": [],
         "UnredeemedAdRewardCredit": 3,
         "InstallDate": now()
