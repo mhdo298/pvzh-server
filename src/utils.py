@@ -9,7 +9,7 @@ from redis import Redis
 import gzip
 
 r = Redis.from_url(os.environ['REDIS_URL'])
-with gzip.open('AssetPathsManifest.gzip', 'r') as f:
+with gzip.open('AssetPathsManifest.gzip') as f:
     assets = f.read()
 
 

@@ -13,13 +13,12 @@ def bundles(path: str):
         version = r.incr('manifest')
         return str(version)
     if path.endswith('/AssetPathsManifest'):
-        version = r.get('manifest').decode()
-
+        version = r.get('manifest')
         content = (assets
-                   .replace('"CARD_DATA_VERSION"', version)
-                   .replace('"DATA_ASSETS_VERSION"', version)
-                   .replace('"INLINE_TEXT_TAG_VERSION"', version)
-                   .replace('"EN_VERSION"', version)
+                   .replace(b'"CARD_DATA_VERSION"', version)
+                   .replace(b'"DATA_ASSETS_VERSION"', version)
+                   .replace(b'"INLINE_TEXT_TAG_VERSION"', version)
+                   .replace(b'"EN_VERSION"', version)
                    )
         return content
     if 'if-none-match' in request.headers.keys():
