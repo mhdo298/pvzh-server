@@ -6,8 +6,11 @@ from collections import OrderedDict
 import blackboxprotobuf
 from flask import url_for, request
 from redis import Redis
+import gzip
 
 r = Redis.from_url(os.environ['REDIS_URL'])
+with gzip.open('AssetPathsManifest.gzip', 'r') as f:
+    assets = f.read()
 
 
 def root():
