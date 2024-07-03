@@ -33,6 +33,6 @@ def bundles(path: str):
         response.headers['Content-length'] = len(content)
         response.headers['Content-Encoding'] = 'gzip'
         return response
-    if 'If-None-Match' in request.headers.keys():
-        return make_response('', 304)
+    # if 'If-None-Match' in request.headers.keys():
+    #     return make_response('', 304)
     return redirect('https://pvzheroes-live.ecs.popcap.com/assetbundles/' + path)
