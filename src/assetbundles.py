@@ -21,14 +21,18 @@ def bundles(path: str):
         version = r.get('manifest')
         content = gzip.compress(assets
                                 .replace(b'"CARD_DATA_VERSION"', version)
+                                .replace(b'"CARD_DATA_SIZE"', b'6177565')
                                 .replace(b'"DATA_ASSETS_VERSION"', version)
+                                .replace(b'"DATA_ASSETS_SIZE"', b'5052264')
                                 .replace(b'"INLINE_TEXT_TAG_VERSION"', version)
+                                .replace(b'"INLINE_TEXT_TAG_SIZE"', b'26813')
                                 .replace(b'"EN_VERSION"', version)
+                                .replace(b'"EN_SIZE"', b'923449')
                                 )
         response = make_response(content)
         response.headers['Content-length'] = len(content)
         response.headers['Content-Encoding'] = 'gzip'
         return response
-    if 'if-none-match' in request.headers.keys():
+    if 'If-None-Match' in request.headers.keys():
         return (None, 304)
     return redirect('https://pvzheroes-live.ecs.popcap.com/assetbundles/' + path)
