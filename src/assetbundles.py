@@ -1,4 +1,5 @@
 import gzip
+import os
 
 from flask import Blueprint, redirect, request, make_response
 from utils import r, assets
@@ -12,7 +13,7 @@ mod_files = ['/cards/card_data', '/data_assets', '/fonts/inline_text_tag', '/loc
 def bundles(path: str):
     for mod_file in mod_files:
         if mod_file in path:
-            return redirect('https://storage.googleapis.com/devh-mod-files/files' + mod_file)
+            return redirect(os.environ['BUCKET_PATH'] + mod_file)
     if path.endswith('/manifest_version'):
         version = r.incr('manifest')
         return str(version)
