@@ -5,6 +5,7 @@ from persistence import persistence
 from persistence import persistence2
 from pvp import pvp
 from seasons import seasons
+from utils import root
 
 app = Flask(__name__)
 app.register_blueprint(matchmaking)
@@ -74,7 +75,7 @@ def load():
     "MinimumAppVersion": "1.50.2",
     "MinimumAppVersionHeaderTextKey": "AppOutOfDate_ThanksForPlaying_Header",
     "MinimumAppVersionTextKey": "UPDATE_REQUIRED",
-    "MultiplayerBaseUrlProd": \"""" + request.url_root[:-1] + \
+    "MultiplayerBaseUrlProd": \"""" + root() + \
               """\",
               "OocOfferCount": 2,
               "PersistenceBaseUrlProd": "https://pvz-heroes.awspopcap.com/persistence/",

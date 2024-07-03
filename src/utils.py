@@ -9,6 +9,8 @@ from redis import Redis
 
 r = Redis.from_url(os.environ['REDIS_URL'])
 
+def root():
+    return request.root_url[:-1].replace('http:', 'https:')
 
 def get_id():
     return request.headers.get("eadp-persona-id")
