@@ -1,3 +1,5 @@
+import json
+
 from flask import Blueprint, request
 
 from utils import get_id, now, r
@@ -95,9 +97,13 @@ def inventory():
     events = request.get_json()
     if 'Events' in events:
         events = events['Events']
-        r.set('Event', events)
+        r.set('Event', json.dumps(events))
     else:
         events = r.get('Event')
+        if events is None:
+            events = {}
+        else:
+            events = json.loads(events)
     return {
         "lastUpdated": now(),
         "version": 1,

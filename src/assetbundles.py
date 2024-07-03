@@ -8,6 +8,7 @@ assetbundles = Blueprint('assetbundles', __name__, url_prefix='/assetbundles')
 def bundles(path):
     if 'if-none-match' in request.headers.keys():
         print(request.headers.get_all('if-none-match'))
+        return (None, 304)
     # if path.endswith('/manifest_version'):
     #     version = r.incr('manifest')
     #     return str(version)
