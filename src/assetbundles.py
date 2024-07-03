@@ -20,7 +20,7 @@ def bundles(path: str):
 
     if path.endswith('/manifest_version'):
         version = r.incr('manifest')
-        return version
+        return str(version)
     if path.endswith('/AssetPathsManifest'):
         version = r.get('manifest')
         content = (assets
