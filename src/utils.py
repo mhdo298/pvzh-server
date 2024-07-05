@@ -562,11 +562,6 @@ def make_entity_model(sd1, sd2):
                             "1": -1,
                             "2": int(x)
                         }] * plant_sd['Deck']['super'][x]]
-    max_hand = 15
-    max_health = 50
-    if '1005433873053' in [plant_id, zombie_id]:
-        max_hand = 10
-        max_health = 20
     model_json = {
         "1": [
             {
@@ -579,7 +574,7 @@ def make_entity_model(sd1, sd2):
                         "68": {
                             "2": {
                                 "1": {
-                                    "1": max_health  # initial health?
+                                    "1": 50  # initial health?
                                 },
                                 "2": 0
                             }
@@ -682,7 +677,7 @@ def make_entity_model(sd1, sd2):
             }, {
                 "1": [{
                     "20": {
-                        "1": max_hand  # max hand size?
+                        "1": 15  # max hand size?
                     }
                 }, {
                     "37": {
@@ -723,7 +718,7 @@ def make_entity_model(sd1, sd2):
                     "68": {
                         "2": {
                             "1": {
-                                "1": max_health
+                                "1": 50
                             },
                             "2": 0
                         }
@@ -827,7 +822,7 @@ def make_entity_model(sd1, sd2):
             {
                 "1": [{
                     "20": {
-                        "1": max_hand
+                        "1": 15
                     }
                 }, {
                     "37": {
