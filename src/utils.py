@@ -10,18 +10,19 @@ from redis import Redis
 import psycopg2
 import gzip
 
-# "ip://usr:pswd@postgres:5432"
-conStr = os.environ['POSTGRESQL_URL']
-p = urlparse(conStr)
-
-pg_connection_dict = {
-    'dbname': p.hostname,
-    'user': p.username,
-    'password': p.password,
-    'port': p.port,
-    'host': p.scheme
-}
-con = psycopg2.connect(**pg_connection_dict)
+result = urlparse(os.environ['POSTGRESQL_URL'])
+username = result.username
+password = result.password
+database = result.path[1:]
+hostname = result.hostname
+port = result.port
+con = psycopg2.connect(
+    database=database,
+    user=username,
+    password=password,
+    host=hostname,
+    port=port
+)
 con.set_session(autocommit=True)
 db = con.cursor()
 db.execute("""
@@ -552,6 +553,7 @@ rng_typedef = OrderedDict({
         'type': 'int'
     })
 })
+
 
 def make_entity_model(sd1, sd2):
     if sd1["Faction"] == "Zombies":
