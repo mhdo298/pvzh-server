@@ -15,23 +15,19 @@ def ping():
 
 @persistence.route('/decks/sync', methods=['POST'])
 def decks():
-    pid = get_id()
-    data = request.get_json()
-    decks = data['Decks']
-    for deck in decks:
-        deck_id = deck["Id"]
-        db.execute(
-            'INSERT INTO decks (player_id, deck_id, deck) VALUES (%s, %s, %s) ON CONFLICT (player_id, deck_id) DO UPDATE SET deck = EXCLUDED.deck',
-            (pid, deck_id, json.dumps(deck)))
+    # pid = get_id()
+    # data = request.get_json()
+    # decks = data['Decks']
+    # for deck in decks:
+    #     deck_id = deck["Id"]
+    #     db.execute(
+    #         'INSERT INTO decks (player_id, deck_id, deck) VALUES (%s, %s, %s) ON CONFLICT (player_id, deck_id) DO UPDATE SET deck = EXCLUDED.deck',
+    #         (pid, deck_id, json.dumps(deck)))
+    #
+    # db.execute('SELECT deck FROM decks WHERE player_id = %s', (pid,))
+    # decks = db.fetchall()
 
-    db.execute('SELECT deck FROM decks WHERE player_id = %s', (pid,))
-    decks = db.fetchall()
-
-    return {
-        "version": 1,
-        "Id": get_id(),
-        "Decks": decks
-    }
+    return ''
 
 
 @persistence.route('/user/sync', methods=['POST'])
