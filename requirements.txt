@@ -2,4 +2,4 @@ Flask
 Gunicorn
 bbpb
 redis[hiredis]
-psycopg2-binary
+psycopg2
