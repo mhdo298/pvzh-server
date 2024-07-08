@@ -21,10 +21,10 @@ def decks():
     for deck in decks:
         deck_id = deck["Id"]
         db.execute(
-            'INSERT INTO decks (player_id, deck_id, deck) VALUES ($1, $2, $3) ON CONFLICT (player_id, deck_id) DO UPDATE SET deck = EXCLUDED.deck',
+            'INSERT INTO decks (player_id, deck_id, deck) VALUES (%s, %s, %s) ON CONFLICT (player_id, deck_id) DO UPDATE SET deck = EXCLUDED.deck',
             (pid, deck_id, json.dumps(deck)))
 
-    db.execute('SELECT deck FROM decks WHERE player_id = $1', (pid,))
+    db.execute('SELECT deck FROM decks WHERE player_id = %s', (pid,))
     decks = db.fetchall()
 
     return {
