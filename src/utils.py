@@ -2,11 +2,42 @@ import base64
 import os
 import time
 from collections import OrderedDict
+from urllib.parse import urlparse
 
 import blackboxprotobuf
-from flask import url_for, request
+from flask import request
 from redis import Redis
+import psycopg2
 import gzip
+
+# "ip://usr:pswd@postgres:5432"
+conStr = os.environ['POSTGRESQL_URL']
+p = urlparse(conStr)
+
+pg_connection_dict = {
+    'dbname': p.hostname,
+    'user': p.username,
+    'password': p.password,
+    'port': p.port,
+    'host': p.scheme
+}
+con = psycopg2.connect(**pg_connection_dict)
+con.set_session(autocommit=True)
+db = con.cursor()
+db.execute("""
+Create table if not exists PLAYER_INFO
+(
+    player_id        varchar(15),
+    manifest_version integer
+);
+Create table if not exists DECKS
+(
+    player_id varchar(15),
+    deck_id   varchar(15),
+    deck      json,
+    UNIQUE (player_id, deck_id)
+)
+""")
 
 r = Redis.from_url(os.environ['REDIS_URL'])
 with gzip.open('AssetPathsManifest.gzip') as f:
@@ -521,8 +552,6 @@ rng_typedef = OrderedDict({
         'type': 'int'
     })
 })
-mask = ~(-1 << 60)
-
 
 def make_entity_model(sd1, sd2):
     if sd1["Faction"] == "Zombies":
@@ -933,6 +962,6 @@ def make_entity_model(sd1, sd2):
 
 def make_rng(rng_seed):
     return base64.b64encode(blackboxprotobuf.encode_message({
-        '1': rng_seed & mask,
+        '1': rng_seed,
         '2': 0
     }, rng_typedef)).decode()

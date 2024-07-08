@@ -2,3 +2,4 @@ Flask
 Gunicorn
 bbpb
 redis[hiredis]
+psycopg2

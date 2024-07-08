@@ -2,7 +2,7 @@ import json
 
 from flask import Blueprint, request
 
-from utils import get_id, now, r
+from utils import get_id, now, r, db
 
 persistence = Blueprint('persistence', __name__, url_prefix='/persistence/v1')
 persistence2 = Blueprint('persistence2', __name__, url_prefix='/persistence/v2')
@@ -15,10 +15,21 @@ def ping():
 
 @persistence.route('/decks/sync', methods=['POST'])
 def decks():
+    pid = get_id()
+    data = request.get_json()
+    decks = data['Decks']
+    for deck in decks:
+        deck_id = deck["Id"]
+        db.execute(
+            'INSERT INTO decks (player_id, deck_id, deck) VALUES ($1, $2, $3) ON CONFLICT (player_id, deck_id) DO UPDATE SET deck = EXCLUDED.deck',
+            (pid, deck_id, json.dumps(deck)))
+
+    db.execute('SELECT deck FROM decks WHERE player_id = $1', (pid,))
+    decks = db.fetchall()
     return {
         "version": 1,
         "Id": get_id(),
-        "Decks": []
+        "Decks": decks
     }
 
 
