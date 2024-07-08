@@ -26,6 +26,7 @@ def decks():
 
     db.execute('SELECT deck FROM decks WHERE player_id = $1', (pid,))
     decks = db.fetchall()
+
     return {
         "version": 1,
         "Id": get_id(),
