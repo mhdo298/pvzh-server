@@ -1,0 +1,5 @@
+quart
+aiohttp
+orjson
+psycopg[binary]
+psycopg[pool]

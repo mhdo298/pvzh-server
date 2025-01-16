@@ -1,0 +1,15 @@
+services:
+  persistence:
+    build: .
+    ports:
+      - "4001:8000"
+    volumes:
+      - ../../../src/persistence:/src/persistence/
+      - ../../../src/utils:/src/utils/
+      - ../../../src/app.py:/app.py
+      - user_data:/user_data
+    env_file: ".env"
+    command: [ "hypercorn", "-b", "0.0.0.0:8000", "app:create_app()" ]
+    restart: always
+volumes:
+  user_data:

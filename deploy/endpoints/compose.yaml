@@ -1,0 +1,14 @@
+services:
+  all_endpoints:
+    build: .
+    ports:
+      - "4000:8000"
+    volumes:
+      - ../../src:/src/
+      - ../../src/app.py:/app.py
+      - user_data:/user_data
+    env_file: ".env"
+    command: [ "hypercorn", "-b", "0.0.0.0:8000", "app:create_app()" ]
+    restart: always
+volumes:
+  user_data:

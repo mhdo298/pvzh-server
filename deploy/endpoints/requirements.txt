@@ -1,0 +1,6 @@
+quart
+aiohttp
+orjson
+redis[hiredis]
+psycopg[binary]
+psycopg[pool]

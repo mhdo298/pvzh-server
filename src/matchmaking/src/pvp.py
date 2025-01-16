@@ -1,0 +1,989 @@
+import base64
+import json
+from collections import OrderedDict
+
+import blackboxprotobuf
+from flask import Blueprint, request
+
+from cache import get_or_default, r
+from utils import get_id
+
+#
+pvp = Blueprint('pvp', __name__, url_prefix='/pvp')
+
+
+@pvp.route('/<version>/playerPvpData')
+def player_pvp_data(version):
+    return {
+        "gamesPlayed": 0,
+        "stars": 0,
+        "id": get_id(),
+        "version": 1,
+        "season": "season_79",
+        "wins": 0,
+        "losses": 0,
+        "mmr": 1600,
+        "rank": 1,
+        "streakBonus": 0,
+        "wonLastGame": False
+    }
+
+
+@pvp.route('/<version>/initGame', methods=['POST'])
+def init_game(version):
+    pid = get_id()
+    data = request.get_json()
+    gi = data['gi']
+    seed1 = get_or_default(pid + '-seed', r.get, b'')
+    seed2 = get_or_default(gi + '-seed', r.get, b'')
+    seed = int(seed1) ^ int(seed2)
+    sd1 = get_or_default(pid + '-sd', r.get, b'')
+    sd2 = get_or_default(gi + '-sd', r.get, b'')
+    return {
+        "entityModel": make_entity_model(json.loads(sd1), json.loads(sd2)),
+        "rngSeedData": make_rng(seed),
+        "ec": "CgQgACgA",
+        "sc": "",
+        "tec": "",
+        "cec": "EAE=",
+        "ty": "InitialGameState",
+        "plays": "{}",
+        "gst": "0"
+    }
+
+
+@pvp.route('/<version>/pvpSendUpdate', methods=['POST'])
+def pvp_send_update(version):
+    data = request.get_json()
+    gi = data['gi']
+    r.rpush(gi + '-update', json.dumps(data))
+    r.expire(gi + '-update', 300)
+    return {
+        "ty": "PlayResponse",
+        "p": "Play"
+    }
+
+
+@pvp.route('/<version>/pvpPoll', methods=['POST'])
+def pvp_poll(version):
+    pid = get_id()
+    data = request.get_json()
+    l = int(data['l'])
+    update = r.blpop([pid + '-update'], 4)
+    if update:
+        return {
+            "m": [update[1].decode()],
+            "l": l + 1,
+            "ty": "PvpMessages"
+        }
+    else:
+        return {
+            "m": [],
+            "l": 0,
+            "ty": "PvpMessages"
+        }
+
+
+def make_rng(rng_seed):
+    return base64.b64encode(blackboxprotobuf.encode_message({
+        '1': rng_seed,
+        '2': 0
+    }, rng_typedef)).decode()
+
+
+def make_entity_model(sd1, sd2):
+    if sd1["Faction"] == "Zombies":
+        zombie_sd = sd1
+        plant_sd = sd2
+    else:
+        plant_sd = sd1
+        zombie_sd = sd2
+
+    zombie_id = zombie_sd["PlayerId"]
+    zombie_hero = {
+        "1": zombie_sd['HeroId'],
+        "2": zombie_sd['HeroAssetId']
+    }
+    zombie_main_deck = [y for x in zombie_sd['Deck']['main'] for y in
+                        [{
+                            "1": -1,
+                            "2": int(x)
+                        }] * zombie_sd['Deck']['main'][x]]
+    zombie_super_deck = [y for x in zombie_sd['Deck']['super'] for y in
+                         [{
+                             "1": -1,
+                             "2": int(x)
+                         }] * zombie_sd['Deck']['super'][x]]
+    plant_id = plant_sd["PlayerId"]
+    plant_hero = {
+        "1": plant_sd['HeroId'],
+        "2": plant_sd['HeroAssetId']
+    }
+    plant_main_deck = [y for x in plant_sd['Deck']['main'] for y in
+                       [{
+                           "1": -1,
+                           "2": int(x)
+                       }] * plant_sd['Deck']['main'][x]]
+    plant_super_deck = [y for x in plant_sd['Deck']['super'] for y in
+                        [{
+                            "1": -1,
+                            "2": int(x)
+                        }] * plant_sd['Deck']['super'][x]]
+    max_hand = 10
+    max_health = 20
+    model_json = {
+        "1": [
+            {
+                "1": [
+                    {
+                        "54": {
+                            "1": zombie_id
+                        }
+                    }, {
+                        "68": {
+                            "2": {
+                                "1": {
+                                    "1": max_health  # initial health?
+                                },
+                                "2": 0
+                            }
+                        }
+                    }, {
+                        "37": {
+                            "1": 0
+                        }
+                    },
+                    {
+                        "1": {
+                            "28": {}
+                        }
+                    }, {
+                        "11": {
+                            "1": 1
+                        }
+                    }, {
+                        "35": {
+                            "1": 2
+                        }
+                    }, {
+                        "21": {
+                            "1": 3
+                        }
+                    }, {
+                        "14": {
+                            "1": 4
+                        }
+                    },
+                    {
+                        "32": {
+                            "1": {
+                                "1": 1
+                            },
+                            "2": 0
+                        }
+                    }, {
+                        "33": {  # block meter chances
+                            "1": {
+                                "1": [{
+                                    "1": 33,
+                                    "2": 10
+                                }, {
+                                    "1": 34,
+                                    "2": 20
+                                }, {
+                                    "1": 33,
+                                    "2": 30
+                                }]
+                            },
+                            "2": 2147483647,  # SuperBlockHealthThreshold?
+                            "3": 0,
+                            "4": 80  # block meter max
+                        }
+                    }, {
+                        "55": {}
+                    }, {
+                        "1": {
+                            "35": {}
+                        }
+                    }, {
+                        "1": {
+                            "66": {}
+                        }
+                    }, {
+                        "1": {
+                            "69": {}
+                        }
+                    },
+                    {
+                        "24": zombie_hero
+                    }],
+                "2": 0
+            },
+            {
+                "1": [{
+                    "10": {
+                        "1": 0,
+                        "2": 1
+                    }
+                }, {
+                    "28": {
+                        "1": zombie_main_deck
+                    }
+                }],
+                "2": 1
+            },
+            {
+                "1": [{
+                    "34": {
+                        "1": 1
+                    }
+                }, {
+                    "28": {
+                        "1": zombie_super_deck
+                    }
+                }],
+                "2": 2
+            }, {
+                "1": [{
+                    "20": {
+                        "1": max_hand  # max hand size?
+                    }
+                }, {
+                    "37": {
+                        "1": 0
+                    }
+                }, {
+                    "16": {
+                        "1": 4,  # initial cards?
+                        "2": 1,  # initial superpowers?
+                        "3": 1  # cards per turn?
+                    }
+                }, {
+                    "29": {
+                        "1": 0
+                    }
+                },
+                    {
+                        "11": {
+                            "1": 1
+                        }
+                    }, {
+                        "35": {
+                            "1": 2
+                        }
+                    }],
+                "2": 3
+            }, {
+                "1": [{
+                    "13": {}
+                }],
+                "2": 4
+            }, {
+                "1": [{
+                    "54": {
+                        "1": plant_id
+                    }
+                }, {
+                    "68": {
+                        "2": {
+                            "1": {
+                                "1": max_health
+                            },
+                            "2": 0
+                        }
+                    }
+                }, {
+                    "37": {
+                        "1": 0
+                    }
+                },
+                    {
+                        "1": {
+                            "16": {}
+                        }
+                    }, {
+                        "11": {
+                            "1": 6
+                        }
+                    }, {
+                        "35": {
+                            "1": 7
+                        }
+                    }, {
+                        "21": {
+                            "1": 8
+                        }
+                    }, {
+                        "14": {
+                            "1": 9
+                        }
+                    },
+                    {
+                        "32": {
+                            "1": {
+                                "1": 1
+                            },
+                            "2": 0
+                        }
+                    }, {
+                        "33": {
+                            "1": {
+                                "1": [{
+                                    "1": 33,
+                                    "2": 10
+                                }, {
+                                    "1": 34,
+                                    "2": 20
+                                }, {
+                                    "1": 33,
+                                    "2": 30
+                                }]
+                            },
+                            "2": 2147483647,
+                            "3": 0,
+                            "4": 80
+                        }
+                    }, {
+                        "55": {}
+                    }, {
+                        "1": {
+                            "35": {}
+                        }
+                    }, {
+                        "1": {
+                            "66": {}
+                        }
+                    }, {
+                        "1": {
+                            "69": {}
+                        }
+                    },
+                    {
+                        "24": plant_hero
+                    }],
+                "2": 5
+            },
+            {
+                "1": [{
+                    "10": {
+                        "1": 0,
+                        "2": 1
+                    }
+                }, {
+                    "28": {
+                        "1": plant_main_deck
+                    }
+                }],
+                "2": 6
+            },
+            {
+                "1": [{
+                    "34": {
+                        "1": 1
+                    }
+                }, {
+                    "28": {
+                        "1": plant_super_deck
+                    }
+                }],
+                "2": 7
+            },
+            {
+                "1": [{
+                    "20": {
+                        "1": max_hand
+                    }
+                }, {
+                    "37": {
+                        "1": 0
+                    }
+                }, {
+                    "16": {
+                        "1": 4,
+                        "2": 1,
+                        "3": 1
+                    }
+                }, {
+                    "29": {
+                        "1": 5
+                    }
+                },
+                    {
+                        "11": {
+                            "1": 6
+                        }
+                    }, {
+                        "35": {
+                            "1": 7
+                        }
+                    }],
+                "2": 8
+            }, {
+                "1": [{
+                    "13": {}
+                }],
+                "2": 9
+            }, {
+                "1": [{
+                    "26": {}
+                }],
+                "2": 10
+            },
+
+            {
+                "1": [{
+                    "3": {
+                        "2": 0,
+                        "3": -1
+                    }
+                }, {
+                    "1": {
+                        "13": {}
+                    }
+                }],
+                "2": 11
+            },
+            {
+                "1": [{
+                    "3": {
+                        "2": 1,
+                        "3": -1
+                    }
+                }, {
+                    "1": {
+                        "12": {}
+                    }
+                }],
+                "2": 12
+            },
+            {
+                "1": [{
+                    "3": {
+                        "2": 2,
+                        "3": -1
+                    }
+                }, {
+                    "1": {
+                        "12": {}
+                    }
+                }],
+                "2": 13
+            },
+            {
+                "1": [{
+                    "3": {
+                        "2": 3,
+                        "3": -1
+                    }
+                }, {
+                    "1": {
+                        "12": {}
+                    }
+                }],
+                "2": 14
+            },
+            {
+                "1": [{
+                    "3": {
+                        "2": 4,
+                        "3": -1
+                    }
+                }, {
+                    "1": {
+                        "4": {}
+                    }
+                }],
+                "2": 15
+            }],
+        "2": 16
+    }
+    return base64.b64encode(blackboxprotobuf.encode_message(model_json, entity_model_typedef)).decode()
+
+
+entity_model_typedef = OrderedDict({
+    '1': OrderedDict({
+        'name': '',
+        'type': 'message',
+        'field_order': ['1', '1',
+                        '1', '1',
+                        '1', '1',
+                        '1', '1',
+                        '1', '1',
+                        '1', '1',
+                        '1', '1',
+                        '1',
+                        '2'],
+        'seen_repeated': True,
+        'message_typedef': OrderedDict(
+            {
+                '1': OrderedDict({
+                    'name': '',
+                    'type': 'message',
+                    'field_order': [
+                        '3'],
+                    'seen_repeated': True,
+                    'message_typedef': OrderedDict(
+                        {
+                            '1': OrderedDict({
+                                'name': '',
+                                'type': 'message',
+                                'field_order': [
+                                    '4'],
+                                'message_typedef': OrderedDict({
+                                    '4': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'message',
+                                            'field_order': [],
+                                            'message_typedef': OrderedDict()
+                                        }),
+                                    '12': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'message',
+                                            'field_order': [],
+                                            'message_typedef': OrderedDict()
+                                        }),
+                                    '13': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'message',
+                                            'field_order': [],
+                                            'message_typedef': OrderedDict()
+                                        }),
+                                    '16': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'message',
+                                            'field_order': [],
+                                            'message_typedef': OrderedDict()
+                                        }),
+                                    '28': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'message',
+                                            'field_order': [],
+                                            'message_typedef': OrderedDict()
+                                        }),
+                                    '35': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'message',
+                                            'field_order': [],
+                                            'message_typedef': OrderedDict()
+                                        }),
+                                    '66': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'message',
+                                            'field_order': [],
+                                            'message_typedef': OrderedDict()
+                                        }),
+                                    '69': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'message',
+                                            'field_order': [],
+                                            'message_typedef': OrderedDict()
+                                        })
+                                })
+                            }),
+                            '3': OrderedDict({
+                                'name': '',
+                                'type': 'message',
+                                'field_order': [
+                                    '2', '3'],
+                                'message_typedef': OrderedDict({
+                                    '2': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'int'
+                                        }),
+                                    '3': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'int'
+                                        })
+                                })
+                            }),
+                            '10': OrderedDict({
+                                'name': '',
+                                'type': 'message',
+                                'field_order': [
+                                    '1', '2'],
+                                'message_typedef': OrderedDict({
+                                    '1': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'int'
+                                        }),
+                                    '2': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'int'
+                                        })
+                                })
+                            }),
+                            '11': OrderedDict(
+                                {
+                                    'name': '',
+                                    'type': 'message',
+                                    'field_order': [
+                                        '1'],
+                                    'message_typedef': OrderedDict(
+                                        {
+                                            '1': OrderedDict({
+                                                'name': '',
+                                                'type': 'int'
+                                            })
+                                        })
+                                }),
+                            '13': OrderedDict(
+                                {
+                                    'name': '',
+                                    'type': 'message',
+                                    'field_order': [],
+                                    'message_typedef': OrderedDict()
+                                }),
+                            '14': OrderedDict(
+                                {
+                                    'name': '',
+                                    'type': 'message',
+                                    'field_order': [
+                                        '1'],
+                                    'message_typedef': OrderedDict(
+                                        {
+                                            '1': OrderedDict({
+                                                'name': '',
+                                                'type': 'int'
+                                            })
+                                        })
+                                }),
+                            '16': OrderedDict({
+                                'name': '',
+                                'type': 'message',
+                                'field_order': [
+                                    '1', '2', '3'],
+                                'message_typedef': OrderedDict({
+                                    '1': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'int'
+                                        }),
+                                    '2': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'int'
+                                        }),
+                                    '3': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'int'
+                                        })
+                                })
+                            }),
+                            '20': OrderedDict({
+                                'name': '',
+                                'type': 'message',
+                                'field_order': [
+                                    '1'],
+                                'message_typedef': OrderedDict(
+                                    {
+                                        '1': OrderedDict({
+                                            'name': '',
+                                            'type': 'int'
+                                        })
+                                    })
+                            }),
+                            '21': OrderedDict(
+                                {
+                                    'name': '',
+                                    'type': 'message',
+                                    'field_order': [
+                                        '1'],
+                                    'message_typedef': OrderedDict(
+                                        {
+                                            '1': OrderedDict({
+                                                'name': '',
+                                                'type': 'int'
+                                            })
+                                        })
+                                }),
+                            '24': OrderedDict({
+                                'name': '',
+                                'type': 'message',
+                                'field_order': [
+                                    '1', '2'],
+                                'message_typedef': OrderedDict({
+                                    '1': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'string'
+                                        }),
+                                    '2': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'string'
+                                        })
+                                })
+                            }),
+                            '26': OrderedDict(
+                                {
+                                    'name': '',
+                                    'type': 'message',
+                                    'field_order': [],
+                                    'message_typedef': OrderedDict()
+                                }),
+                            '28': OrderedDict({
+                                'name': '',
+                                'type': 'message',
+                                'field_order': [
+                                    '1', '1', '1',
+                                    '1'],
+                                'message_typedef': OrderedDict({
+                                    '1': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'message',
+                                            'field_order': [
+                                                '1',
+                                                '2'],
+                                            'seen_repeated': True,
+                                            'message_typedef': OrderedDict(
+                                                {
+                                                    '1': OrderedDict(
+                                                        {
+                                                            'name': '',
+                                                            'type': 'int'
+                                                        }),
+                                                    '2': OrderedDict(
+                                                        {
+                                                            'name': '',
+                                                            'type': 'int'
+                                                        })
+                                                })
+                                        })
+                                })
+                            }),
+                            '29': OrderedDict({
+                                'name': '',
+                                'type': 'message',
+                                'field_order': [
+                                    '1'],
+                                'message_typedef': OrderedDict(
+                                    {
+                                        '1': OrderedDict({
+                                            'name': '',
+                                            'type': 'int'
+                                        })
+                                    })
+                            }),
+                            '32': OrderedDict(
+                                {
+                                    'name': '',
+                                    'type': 'message',
+                                    'field_order': ['1',
+                                                    '2'],
+                                    'message_typedef': OrderedDict(
+                                        {
+                                            '1': OrderedDict({
+                                                'name': '',
+                                                'type': 'message',
+                                                'field_order': [
+                                                    '1'],
+                                                'message_typedef': OrderedDict({
+                                                    '1': OrderedDict(
+                                                        {
+                                                            'name': '',
+                                                            'type': 'int'
+                                                        })
+                                                })
+                                            }),
+                                            '2': OrderedDict(
+                                                {
+                                                    'name': '',
+                                                    'type': 'int'
+                                                })
+                                        })
+                                }),
+                            '33': OrderedDict({
+                                'name': '',
+                                'type': 'message',
+                                'field_order': [
+                                    '1', '2', '3',
+                                    '4'],
+                                'message_typedef': OrderedDict({
+                                    '1': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'message',
+                                            'field_order': [
+                                                '1',
+                                                '1',
+                                                '1'],
+                                            'message_typedef': OrderedDict(
+                                                {
+                                                    '1': OrderedDict(
+                                                        {
+                                                            'name': '',
+                                                            'type': 'message',
+                                                            'field_order': [
+                                                                '1',
+                                                                '2'],
+                                                            'seen_repeated': True,
+                                                            'message_typedef': OrderedDict(
+                                                                {
+                                                                    '1': OrderedDict(
+                                                                        {
+                                                                            'name': '',
+                                                                            'type': 'int'
+                                                                        }),
+                                                                    '2': OrderedDict(
+                                                                        {
+                                                                            'name': '',
+                                                                            'type': 'int'
+                                                                        })
+                                                                })
+                                                        })
+                                                })
+                                        }),
+                                    '2': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'int'
+                                        }),
+                                    '3': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'int'
+                                        }),
+                                    '4': OrderedDict(
+                                        {
+                                            'name': '',
+                                            'type': 'int'
+                                        })
+                                })
+                            }),
+                            '34': OrderedDict({
+                                'name': '',
+                                'type': 'message',
+                                'field_order': [
+                                    '1'],
+                                'message_typedef': OrderedDict(
+                                    {
+                                        '1': OrderedDict({
+                                            'name': '',
+                                            'type': 'int'
+                                        })
+                                    })
+                            }),
+                            '35': OrderedDict(
+                                {
+                                    'name': '',
+                                    'type': 'message',
+                                    'field_order': [
+                                        '1'],
+                                    'message_typedef': OrderedDict(
+                                        {
+                                            '1': OrderedDict({
+                                                'name': '',
+                                                'type': 'int'
+                                            })
+                                        })
+                                }),
+                            '37': OrderedDict({
+                                'name': '',
+                                'type': 'message',
+                                'field_order': [
+                                    '1'],
+                                'message_typedef': OrderedDict(
+                                    {
+                                        '1': OrderedDict({
+                                            'name': '',
+                                            'type': 'int'
+                                        })
+                                    })
+                            }),
+                            '54': OrderedDict({
+                                'name': '',
+                                'type': 'message',
+                                'field_order': [
+                                    '1'],
+                                'message_typedef': OrderedDict(
+                                    {
+                                        '1': OrderedDict({
+                                            'name': '',
+                                            'type': 'string'
+                                        })
+                                    })
+                            }),
+                            '55': OrderedDict(
+                                {
+                                    'name': '',
+                                    'type': 'message',
+                                    'field_order': [],
+                                    'message_typedef': OrderedDict()
+                                }),
+                            '68': OrderedDict(
+                                {
+                                    'name': '',
+                                    'type': 'message',
+                                    'field_order': [
+                                        '2'],
+                                    'message_typedef': OrderedDict({
+                                        '2': OrderedDict(
+                                            {
+                                                'name': '',
+                                                'type': 'message',
+                                                'field_order': [
+                                                    '1',
+                                                    '2'],
+                                                'message_typedef': OrderedDict(
+                                                    {
+                                                        '1': OrderedDict(
+                                                            {
+                                                                'name': '',
+                                                                'type': 'message',
+                                                                'field_order': [
+                                                                    '1'],
+                                                                'message_typedef': OrderedDict(
+                                                                    {
+                                                                        '1': OrderedDict(
+                                                                            {
+                                                                                'name': '',
+                                                                                'type': 'int'
+                                                                            })
+                                                                    })
+                                                            }),
+                                                        '2': OrderedDict(
+                                                            {
+                                                                'name': '',
+                                                                'type': 'int'
+                                                            })
+                                                    })
+                                            })
+                                    })
+                                })
+                        })
+                }),
+                '2': OrderedDict({
+                    'name': '',
+                    'type': 'int'
+                })
+            })
+    }),
+    '2': OrderedDict({
+        'name': '',
+        'type': 'int'
+    })
+})
+rng_typedef = OrderedDict({
+    '1': OrderedDict({
+        'name': '',
+        'type': 'int'
+    }),
+    '2': OrderedDict({
+        'name': '',
+        'type': 'int'
+    })
+})
