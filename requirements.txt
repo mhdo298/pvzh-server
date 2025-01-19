@@ -1,7 +1,0 @@
-quart
-aiofiles
-aiohttp
-redis[hiredis]
-psycopg[binary]
-psycopg[pool]
-orjson
