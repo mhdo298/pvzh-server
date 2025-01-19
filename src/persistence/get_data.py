@@ -25,7 +25,8 @@ async def get_user_data(mod_name):
             ON CONFLICT (player_id, mod_name)  DO 
             UPDATE SET users_data=excluded.users_data;
             """
-            , (pid, mod_name, json.dumps(existing_data)))
+            , (pid, mod_name, json.dumps(existing_data).decode()))
+    await request.db.commit()
     return existing_data
 
 
@@ -50,7 +51,8 @@ async def get_inventory_data(mod_name):
             ON CONFLICT (player_id, mod_name)  DO 
             UPDATE SET inventory_data=excluded.inventory_data;
             """
-            , (pid, mod_name, json.dumps(existing_data)))
+            , (pid, mod_name, json.dumps(existing_data).decode()))
+    await request.db.commit()
     return existing_data
 
 
@@ -66,7 +68,7 @@ async def get_decks_data(mod_name):
         async with cursor.copy("""COPY added_tmp_decks (player_id, mod_name, deck_id, deck_data) FROM STDIN""") as copy:
             for deck in data["Decks"]:
                 if deck["Name"] is not None:
-                    await copy.write_row((pid, mod_name, deck['Id'], json.dumps(deck)))
+                    await copy.write_row((pid, mod_name, deck['Id'], json.dumps(deck).decode()))
                 else:
                     await copy.write_row((pid, mod_name, deck['Id'], None))
         await cursor.execute(
@@ -89,4 +91,5 @@ async def get_decks_data(mod_name):
             """
             , (pid, mod_name))
         all_decks = [row[0] for row in await cursor.fetchall()]
-        return all_decks
+    await request.db.commit()
+    return all_decks

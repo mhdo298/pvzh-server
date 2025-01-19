@@ -11,10 +11,9 @@ def init_db(app: Quart):
     global initialized
     if not initialized:
         initialized = True
-
         @app.while_serving
         async def setup_db():
-            current_app.db_pool = AsyncConnectionPool(conninfo=os.environ['POSTGRES_URL'])
+            current_app.db_pool = AsyncConnectionPool(conninfo=os.environ['POSTGRES_URL'], open=False)
             await current_app.db_pool.open()
             yield
             await current_app.db_pool.close()

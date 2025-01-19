@@ -1,4 +1,0 @@
-quart
-aiohttp
-orjson
-redis[hiredis]

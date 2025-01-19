@@ -4,7 +4,7 @@ import orjson as json
 
 from quart import Blueprint
 
-from src.persistence.get_data import get_user_data, get_decks_data
+from src.persistence.get_data import get_user_data, get_decks_data, get_inventory_data
 from src.utils.database import init_db
 from src.utils.http import get_json, init_http
 from src.utils.misc import get_id, merge_json
@@ -40,7 +40,7 @@ async def inventory(username, repo, version):
     inventory_config, existing_data = await gather(
         get_json(f'https://{username}.github.io/{repo}/configs/inventory.json',
                  f'/{mod_name}/configs/inventory.json'),
-        get_user_data(mod_name))
+        get_inventory_data(mod_name))
     merge_json(inventory_config, existing_data)
     inventory_config["Id"] = get_id()
     return json.dumps(inventory_config)

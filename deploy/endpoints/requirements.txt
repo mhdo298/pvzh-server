@@ -4,3 +4,4 @@ orjson
 redis[hiredis]
 psycopg[binary]
 psycopg[pool]
+bbpb
